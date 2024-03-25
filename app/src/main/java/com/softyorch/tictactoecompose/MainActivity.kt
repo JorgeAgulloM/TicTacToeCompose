@@ -8,7 +8,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.softyorch.tictactoecompose.ui.theme.TicTacToeComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+// Game List
+    // Board : List<String> = 9 positions
+    // GameId: String
+    // Player1
+        // PlayerId
+        // PlayerType
+    // Player2
+
+    // PlayerTurn
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
