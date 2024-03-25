@@ -1,5 +1,7 @@
 package com.softyorch.tictactoecompose.data.network.model
 
+import com.softyorch.tictactoecompose.ui.model.PlayerModel
+import com.softyorch.tictactoecompose.ui.model.PlayerType
 import java.util.Calendar
 
 data class PlayerData(
@@ -8,5 +10,9 @@ data class PlayerData(
 ) {
     companion object {
         val generateId: String = Calendar.getInstance().timeInMillis.hashCode().toString()
+
+        fun PlayerData.toModel(): PlayerModel = PlayerModel(
+            userId!!, PlayerType.gamePlayerById(playerType)
+        )
     }
 }
