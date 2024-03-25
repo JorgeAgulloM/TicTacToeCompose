@@ -14,5 +14,7 @@ data class PlayerData(
         fun PlayerData.toModel(): PlayerModel = PlayerModel(
             userId!!, PlayerType.gamePlayerById(playerType)
         )
+
+        fun PlayerModel.toData(): PlayerData = PlayerData(userId, playerType.id)
     }
 }
