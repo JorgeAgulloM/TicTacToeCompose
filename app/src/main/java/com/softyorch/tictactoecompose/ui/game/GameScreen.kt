@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 
 @Composable
-fun GameScreen(viewModel: GameViewModel = hiltViewModel()) {
+fun GameScreen(viewModel: GameViewModel = hiltViewModel(), navigateToHome: () -> Unit) {
     Board()
 }
 
