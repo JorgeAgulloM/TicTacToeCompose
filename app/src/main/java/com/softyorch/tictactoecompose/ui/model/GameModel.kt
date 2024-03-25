@@ -6,4 +6,5 @@ data class GameModel(
     val player1: PlayerModel,
     val player2: PlayerModel?,
     val playerTurn: PlayerModel,
+    val isGameReady: Boolean = false
 )
