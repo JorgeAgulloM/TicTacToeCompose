@@ -7,6 +7,6 @@ data class PlayerData(
     val playerType: Int? = null
 ) {
     companion object {
-        private val generateId: String = Calendar.getInstance().timeInMillis.hashCode().toString()
+        val generateId: String = Calendar.getInstance().timeInMillis.hashCode().toString()
     }
 }
