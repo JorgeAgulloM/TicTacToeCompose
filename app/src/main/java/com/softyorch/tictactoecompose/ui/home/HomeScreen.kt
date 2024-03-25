@@ -19,10 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToGame: () -> Unit) {
+fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
+    navigateToGame: (String, String, Boolean) -> Unit
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.weight(2f))
-        CreateGame { viewModel.onCreateGame() }
+        CreateGame { viewModel.onCreateGame(navigateToGame) }
         Spacer(modifier = Modifier.weight(1f))
         Divider(
             modifier = Modifier
@@ -30,7 +33,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToGame: () ->
                 .height(2.dp)
         )
         Spacer(modifier = Modifier.weight(1f))
-        JoinToGame { id -> viewModel.onJoinGame(id) }
+        JoinToGame { gameId -> viewModel.onJoinGame(gameId, navigateToGame) }
         Spacer(modifier = Modifier.weight(2f))
     }
 }
