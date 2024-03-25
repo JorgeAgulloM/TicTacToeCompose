@@ -3,6 +3,7 @@ package com.softyorch.tictactoecompose.data.network
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.snapshots
 import com.softyorch.tictactoecompose.data.network.model.GameData
+import com.softyorch.tictactoecompose.data.network.model.GameData.Companion.toData
 import com.softyorch.tictactoecompose.data.network.model.GameData.Companion.toModel
 import com.softyorch.tictactoecompose.ui.model.GameModel
 import kotlinx.coroutines.flow.Flow
@@ -29,4 +30,11 @@ class FirebaseService @Inject constructor(private val reference: DatabaseReferen
                 dataSnapshot.getValue(GameData::class.java)?.toModel()
             }
 
+    fun updateGame(game: GameModel) {
+        setGame(game.toData())
+    }
+
+    private fun setGame(game: GameData) {
+        reference.child(PATH).child(game.gameId!!).setValue(game)
+    }
 }
