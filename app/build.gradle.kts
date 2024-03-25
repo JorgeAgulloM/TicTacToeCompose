@@ -43,12 +43,15 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.4.3"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    kotlin {
+        jvmToolchain(8)
     }
 }
 
@@ -60,9 +63,9 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx")
 
     // Dagger Hilt
-    implementation ("com.google.dagger:hilt-android:2.44")
+    implementation ("com.google.dagger:hilt-android:2.44.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt ("com.google.dagger:hilt-compiler:2.44")
+    kapt ("com.google.dagger:hilt-compiler:2.44.2")
 
     // Material 2
     implementation("androidx.compose.material:material:1.6.4")
