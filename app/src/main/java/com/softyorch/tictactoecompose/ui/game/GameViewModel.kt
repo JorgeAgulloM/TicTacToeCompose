@@ -1,10 +1,16 @@
 package com.softyorch.tictactoecompose.ui.game
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softyorch.tictactoecompose.data.network.FirebaseService
+import com.softyorch.tictactoecompose.ui.model.GameModel
+import com.softyorch.tictactoecompose.ui.model.PlayerModel
+import com.softyorch.tictactoecompose.ui.model.PlayerType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,8 +19,9 @@ class GameViewModel @Inject constructor(
     private val firebaseService: FirebaseService
 ) : ViewModel() {
 
-
     lateinit var userId: String
+    private var _game = MutableStateFlow<GameModel?>(null)
+    val game: StateFlow<GameModel?> = _game
 
     fun joinToGame(gameId: String, userId: String, owner: Boolean) {
         this.userId = userId
@@ -27,13 +34,30 @@ class GameViewModel @Inject constructor(
 
     private fun joinToGameLikeOwner(gameId: String) {
         viewModelScope.launch {
-            firebaseService.joinToGame(gameId).collect {
-                Log.i("BeerChatLog", it.toString())
+            firebaseService.joinToGame(gameId).collect { game ->
+                val gameResult = game?.copy(isGameReady = game.player2 != null)
+                _game.update { gameResult }
             }
         }
     }
 
     private fun joinToGameLikeGuest(gameId: String) {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+
+            firebaseService.joinToGame(gameId).take(1).collect { game ->
+                val gameResult = game?.copy(player2 = PlayerModel(
+                    userId = userId,
+                    playerType = PlayerType.SecondPlayer
+                ))
+                gameResult?.let {
+                    firebaseService.updateGame(it)
+                }
+            }
+
+            firebaseService.joinToGame(gameId).collect { game ->
+                val gameResult = game?.copy(isGameReady = game.player2 != null)
+                _game.update { gameResult }
+            }
+        }
     }
 }
