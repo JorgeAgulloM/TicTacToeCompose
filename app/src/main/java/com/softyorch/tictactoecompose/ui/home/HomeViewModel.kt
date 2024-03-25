@@ -12,9 +12,20 @@ class HomeViewModel @Inject constructor(
     private val firebaseService: FirebaseService
 ) : ViewModel() {
 
-    fun onCreateGame() {
-        firebaseService.createGame(createNewGame())
+    fun onCreateGame(navigateToGame: (String, String, Boolean) -> Unit) {
+        val game = createNewGame()
+        val gameId = firebaseService.createGame(game)
+        val userId =  game.playerData1?.userId.orEmpty()
+        val owner = true
+        navigateToGame(gameId, userId, owner)
     }
+
+    fun onJoinGame(gameId: String, navigateToGame: (String, String, Boolean) -> Unit) {
+        val owner = false
+        navigateToGame(gameId, userId(), owner)
+    }
+
+    private fun userId(): String = PlayerData.generateId
 
     private fun createNewGame(): GameData {
         val currentPlayer = PlayerData(playerType = 1)
@@ -24,9 +35,5 @@ class HomeViewModel @Inject constructor(
             playerDataTurn = currentPlayer,
             playerData2 = null
         )
-    }
-
-    fun onJoinGame(id: String) {
-
     }
 }
