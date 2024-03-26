@@ -33,12 +33,7 @@ class GameViewModel @Inject constructor(
     }
 
     private fun joinToGameLikeOwner(gameId: String) {
-        viewModelScope.launch {
-            firebaseService.joinToGame(gameId).collect { game ->
-                val gameResult = game?.copy(isGameReady = game.player2 != null)
-                _game.update { gameResult }
-            }
-        }
+        join(gameId)
     }
 
     private fun joinToGameLikeGuest(gameId: String) {
@@ -54,10 +49,18 @@ class GameViewModel @Inject constructor(
                 }
             }
 
+            join(gameId)
+        }
+    }
+
+    private fun join(gameId: String) {
+        viewModelScope.launch {
             firebaseService.joinToGame(gameId).collect { game ->
-                val gameResult = game?.copy(isGameReady = game.player2 != null)
+                val gameResult = game?.copy(isGameReady = game.player2 != null, isMyTurn = isMyTurn())
                 _game.update { gameResult }
             }
         }
     }
+
+    private fun isMyTurn(): Boolean = game.value?.playerTurn?.userId == userId
 }
