@@ -46,7 +46,11 @@ fun Board(game: GameModel?) {
         Text(text = game?.gameId.orEmpty())
 
         val status = if (game?.isGameReady == true) {
-            "Tu turno/Turno del rival"
+            if (game.isMyTurn) {
+                "Tu turno"
+            } else {
+                "Turno del rival"
+            }
         } else {
             "Esperando a Jugador 2"
         }
