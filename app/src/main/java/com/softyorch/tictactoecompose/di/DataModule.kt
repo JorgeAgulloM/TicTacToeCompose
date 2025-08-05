@@ -1,8 +1,8 @@
 package com.softyorch.tictactoecompose.di
 
+import com.google.firebase.Firebase
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.database
 import com.softyorch.tictactoecompose.data.network.FirebaseService
 import dagger.Module
 import dagger.Provides
